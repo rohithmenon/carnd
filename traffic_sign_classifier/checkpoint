@@ -1,2 +1,2 @@
-model_checkpoint_path: "ts_model__beta_0.01__batchsize_32__epochs_30__rate_0.0001"
-all_model_checkpoint_paths: "ts_model__beta_0.01__batchsize_32__epochs_30__rate_0.0001"
+model_checkpoint_path: "ts_model__beta_0.001__batchsize_32__epochs_30__rate_0.0001"
+all_model_checkpoint_paths: "ts_model__beta_0.001__batchsize_32__epochs_30__rate_0.0001"
