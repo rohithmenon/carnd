@@ -68,7 +68,7 @@ Attempt was made to use inception module [Christian Szegedy et al, Going deeper 
 
 ## <a name="training">Training, performance and tuning</a>
 #### Training
-The model described above is setup to minimize for cross-entropy of ground truth labels. Objective function in addition also minimizes sum of squared weights (l2 regularization). This helps in preventing the model to overfit the training data. Note that this regularization is on top of the dropouts we have setup in the fully connected layers. Batch stochastic gradient decent is used as the optimizer with adaptive moments (ADAM) for learning rate. For the above model we have the following hyperparameters:
+The model described above is setup to minimize for cross-entropy of ground truth labels. Objective function in some settings additionally also minimizes sum of squared weights (l2 regularization). This helps in preventing the model to overfit the training data. Note that this regularization is on top of the dropouts we have setup in the fully connected layers. Batch stochastic gradient decent is used as the optimizer with adaptive moments (ADAM) for learning rate. For the above model we have the following hyperparameters:
 1. Learning rate
 2. Batch size
 4. Epochs
@@ -79,7 +79,7 @@ The model described above is setup to minimize for cross-entropy of ground truth
 A very simple hyper parameter search is done using a grid search for (best result in bold):
 1. Learning rate [0.0001, 0.0005, **0.001**, 0.005, 0.01, 0.05]
 2. Batch size [**32**, 64, 128, 256]
-4. Epochs [20, **30**, 40]
+3. Epochs [20, **30**, 40]
 
 **Model Evolution**
 1. LeNet with minor modifications to take in 3 channel input and output of 43 labels. (88.5%)
@@ -88,9 +88,9 @@ A very simple hyper parameter search is done using a grid search for (best resul
 2. LeNet with Grayscale + Sharpening: (93.9%)
 2. More layers (3 convolution layers) + Grayscale + CLAHE Sharpening: (97.2%)
 2. Dropout + More layers (3 convolution layers) + Grayscale + CLAHE + Sharpening: (98.2%)
-2. Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.7%)
+2. Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.6%)
 2. Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.6%)
-2. Regularization + Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.4%)
+2. Regularization + Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.4%).
 
 #### Validation and test performance
 For the above parameter setting, the best validation set accuracy is 98.7%. For the model, the accuracy on test set is 97.2%. The overall accuracy is well above the required 93.0%. But lets see per class precision and recall for the same model. Precision and recall that are below 93% are highlighed in red.
@@ -115,7 +115,7 @@ One can notice that the model is pretty confident about the predictions. The dif
 
 **Top-k predictions for photo images**
 ![](report_images/topk_photo_image_perf.jpg)
-In the case of photo images, the model is not very confident about pedestrian signal and slippery road. It can also be seen that recall for the pedestrian signal class is low. Although the top label is wrong, model predicts the image as pedestrian class with next highest probability.
+In the case of photo images, the model is not very confident about pedestrian signal and slippery roads. Especially for slippery roads, the next highest prediction is pretty close. It can also be seen that recall for the pedestrian signal class is low. Although the top label is wrong, model predicts the image as pedestrian class with next highest probability.
 
 ## <a name="model_visualization">Model Visualization</a>
 Here we visualize the convolution layers for a sample image: General Caution.
