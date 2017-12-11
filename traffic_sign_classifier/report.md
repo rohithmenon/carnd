@@ -1,6 +1,6 @@
 # Project Report: Traffic Sign Recognition
 
-Objective of the project is to demonstrate the use of deep learning, in particular the use of convolutional neural networks for the task of classifying German traffic signs. Deep learning has been pretty successfully used in recent years to get state of the art performance on image classification tasks (most recently capsule networks from Hinton et al). The rest of the document is organized into:
+Objective of the project is to demonstrate the use of deep learning, in particular the use of convolutional neural networks for the task of classifying German traffic signs. Deep learning has been pretty successfully used in recent years to get state of the art performance on image classification tasks (most recently capsule networks from Hinton et al). The rest of the document is organized as:
 
 1. [Problem setup](#problem_setup)
 2. [Data exploration](#data_exploration)
@@ -29,11 +29,11 @@ Images provided in the data set are color images of size 32x32 pixels. There are
 ![](report_images/training_label_distribution.jpg)
 
 ## <a name="preprocessing">Preprocessing</a>
-Images are preprocessed before fed into the model for training and testing. Preprocessing is done so that the model can fit the data easily and does not have to learn the preprocessing logic. While this makes it easier to train, it may also be the case that preprocessing that we have chosen here is not ideal. A much larger/complex model and with more computational resources, we may be able to let the model learn the necessary preprocessing logic. Preprocessing steps we have chosen include:
+Images are preprocessed before fed into the model for training and testing. Preprocessing is done so that the model can fit the data easily and does not have to learn the preprocessing logic. While this makes it easier to train, it may also be the case that preprocessing that is chosen here is not ideal. With a much larger/complex model and  more computational resources, one may be able to let the model learn the necessary preprocessing logic. Preprocessing steps we have chosen include:
 
 1. Resizing the 32x32 images to 80x80 images with Lanczos interpolation
 
-   Resizing images to using Lanczos interpolation tends to give more details to the image visually. The idea is that this interpolation will help the model to learn more about the shape of the signals.
+   Resizing images using Lanczos interpolation tends to give more details to the image visually. The idea is that this interpolation will help the model to learn more about the shape of the signals. It also allows for convolutions at a subpixel level (Because 32x32 image is converted to 80x80, and assuming interpolation does the right job, we have 2.5 pixels per origin pixel).
 
 2. Unsharp masking to sharpen the images
 
@@ -45,13 +45,13 @@ Images are preprocessed before fed into the model for training and testing. Prep
 
 4. Contrast enhancement using Contrast Limited Adaptive Histogram Equalization
 
-   Improving contrast by histogram equalization helps preserve the shape while making the objects in the images more visually pronounced.
+   Improving contrast by histogram equalization helps preserve the shape while making the objects in the images more visually pronounced. This should help with better learning good features for different signal types.
 
 #### Sample of images after preprocessing
 ![](report_images/preprocessed_images.jpg)
 One can see how preprocessed images are more clearer and detailed than the original images.
 
-Also one can notice that the label distribution in the training set has some labels that are under-represented. To compensate, we sample more images from those under-represented image classes. Therefore the new training image set distribution has most of the image classes reasonably represented. Here reasonable is the average number of images per class before sampling.
+Also one can notice that the label distribution in the training set has some labels that are under-represented. To compensate, we sample more images from those under-represented image classes. Therefore the new training image set distribution has most of the image classes reasonably represented. Under-represented classes are sampled so that every image class contains atleast k images (k is the average number of images per class before sampling).
 
 #### Distribution of preprocessed images after sampling under-represented image classes
 ![](report_images/preprocessed_images_distribution.jpg)
@@ -62,7 +62,7 @@ The model used has three layers of convolution/max-pooling followed by three ful
 #### Model Architecture
 ![](report_images/model_architecture.jpg)
 
-The model is inspired by LeNet and ResNet. ResNet has the idea that deeper networks should not perform worse than a corresponding shallow network. The shortcut layer1 and layer3 output is a resnet identity connection. The 1x1 convolution is used to project layer1 output to match layer3 output for concatenation. The resnet idea is also similar to the multi-stage architecture proposed in Traffic Sign Recognition with Multi-Scale Convolutional Networks [Pierre Sermanet and Yann LeCun]. Fully connected layers have 40% dropouts to prevent overfitting.
+The model is inspired by LeNet and ResNet. ResNet has the idea that deeper networks should not perform worse than a corresponding shallow network. The shortcut between layer1 and layer3 output is a resnet identity connection. The 1x1 convolution is used to project layer1 output to match layer3 output for concatenation. The resnet idea is also similar to the multi-stage architecture proposed in Traffic Sign Recognition with Multi-Scale Convolutional Networks [Pierre Sermanet and Yann LeCun]. Fully connected layers have 40% dropouts to prevent overfitting.
 
 Attempt was made to use inception module [Christian Szegedy et al, Going deeper with convolutions] but it was extremely time consuming to train even with a GPU.
 
@@ -72,28 +72,30 @@ The model described above is setup to minimize for cross-entropy of ground truth
 1. Learning rate
 2. Batch size
 4. Epochs
-5. Dropout percentage [keep_prob = 0.6]
-6. Alpha for leaky relu [0.2]
-7. Betas for Adam [defaults]
+5. Regularization constant
+6. Dropout percentage [keep_prob = 0.6]
+7. Alpha for leaky relu [0.2]
+8. Betas for Adam [defaults]
 
 A very simple hyper parameter search is done using a grid search for (best result in bold):
 1. Learning rate [0.0001, 0.0005, **0.001**, 0.005, 0.01, 0.05]
 2. Batch size [**32**, 64, 128, 256]
 3. Epochs [20, **30**, 40]
+4. Regularization [**0.0**, 0.0001, 0.001, 0.01]
 
 **Model Evolution**
 1. LeNet with minor modifications to take in 3 channel input and output of 43 labels. (88.5%)
 2. LeNet with Grayscale: (92.2%)
-2. LeNet with Grayscale + CLAHE: (94.7%)
-2. LeNet with Grayscale + Sharpening: (93.9%)
-2. More layers (3 convolution layers) + Grayscale + CLAHE Sharpening: (97.2%)
-2. Dropout + More layers (3 convolution layers) + Grayscale + CLAHE + Sharpening: (98.2%)
-2. Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.6%)
-2. Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.6%)
-2. Regularization + Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.4%).
+3. LeNet with Grayscale + CLAHE: (94.7%)
+4. LeNet with Grayscale + Sharpening: (93.9%)
+5. More layers (3 convolution layers) + Grayscale + CLAHE Sharpening: (97.2%)
+6. Dropout + More layers (3 convolution layers) + Grayscale + CLAHE + Sharpening: (98.2%)
+7. Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.6%)
+8. Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.8%)
+9. Regularization + Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.4%).
 
 #### Validation and test performance
-For the above parameter setting, the best validation set accuracy is 98.7%. For the model, the accuracy on test set is 97.2%. The overall accuracy is well above the required 93.0%. But lets see per class precision and recall for the same model. Precision and recall that are below 93% are highlighed in red.
+For the above parameter setting, the best validation set accuracy is 98.8%. For the model, the accuracy on test set is 97.9%. The overall accuracy is well above the required 93.0%. But lets see per class precision and recall for the same model. Precision and recall that are below 93% are highlighed in red.
 ![](report_images/per_class_pr.jpg)
 
 #### Performance on new images
@@ -101,7 +103,7 @@ Two classes of new images are considered.
 1. Perfect images of traffic signals
 2. Photos of traffic signals
 
-The model is able to do perfect prediction (100% accuracy) on the perfect images while on the photos, the observed accuracy is 80% (4 out of 5 images rightly classified).
+The model is able to do correct predictions (100% accuracy) on both perfect images and on photo images.
 
 **Performance on perfect images**
 ![](report_images/new_perfect_image_perf.jpg)
@@ -115,7 +117,7 @@ One can notice that the model is pretty confident about the predictions. The dif
 
 **Top-k predictions for photo images**
 ![](report_images/topk_photo_image_perf.jpg)
-In the case of photo images, the model is not very confident about pedestrian signal and slippery roads. Especially for slippery roads, the next highest prediction is pretty close. It can also be seen that recall for the pedestrian signal class is low. Although the top label is wrong, model predicts the image as pedestrian class with next highest probability.
+In the case of photo images, the model is not very confident about pedestrian signal and slippery roads. The prediction probability is < 0.26. For all other cases, the model has the correct label classification probability of > 0.95.
 
 ## <a name="model_visualization">Model Visualization</a>
 Here we visualize the convolution layers for a sample image: General Caution.
