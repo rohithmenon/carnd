@@ -66,19 +66,11 @@ The model is inspired by LeNet and ResNet. ResNet has the idea that deeper netwo
 
 Attempt was made to use inception module [Christian Szegedy et al, Going deeper with convolutions] but it was extremely time consuming to train even with a GPU.
 
-**Model Evolution**
-1. LeNet with minor modifications to take in 3 channel input and output of 43 labels. (94.5%)
-2. Grayscale preprocessing with batch normalization: (96%)
-3. More layers (3 convolution layers): (97%)
-4. Dropout and regularization: (97.5)
-5. ResNet block: (98.7)
-
 ## <a name="training">Training, performance and tuning</a>
 #### Training
 The model described above is setup to minimize for cross-entropy of ground truth labels. Objective function in addition also minimizes sum of squared weights (l2 regularization). This helps in preventing the model to overfit the training data. Note that this regularization is on top of the dropouts we have setup in the fully connected layers. Batch stochastic gradient decent is used as the optimizer with adaptive moments (ADAM) for learning rate. For the above model we have the following hyperparameters:
 1. Learning rate
 2. Batch size
-3. Regularization constant
 4. Epochs
 5. Dropout percentage [keep_prob = 0.6]
 6. Alpha for leaky relu [0.2]
@@ -87,8 +79,18 @@ The model described above is setup to minimize for cross-entropy of ground truth
 A very simple hyper parameter search is done using a grid search for (best result in bold):
 1. Learning rate [0.0001, 0.0005, **0.001**, 0.005, 0.01, 0.05]
 2. Batch size [**32**, 64, 128, 256]
-3. Regularization constant [**0.0001**, 0.0005, 0.001, 0.005, 0.01, 0.05]
 4. Epochs [20, **30**, 40]
+
+**Model Evolution**
+1. LeNet with minor modifications to take in 3 channel input and output of 43 labels. (88.5%)
+2. LeNet with Grayscale: (92.2%)
+2. LeNet with Grayscale + CLAHE: (94.7%)
+2. LeNet with Grayscale + Sharpening: (93.9%)
+2. More layers (3 convolution layers) + Grayscale + CLAHE Sharpening: (97.2%)
+2. Dropout + More layers (3 convolution layers) + Grayscale + CLAHE + Sharpening: (98.2%)
+2. Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.7%)
+2. Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.6%)
+2. Regularization + Resnet + Dropout + More layers (3 convolution layers) + Resize 80x80 + Grayscale + CLAHE Sharpening: (98.4%)
 
 #### Validation and test performance
 For the above parameter setting, the best validation set accuracy is 98.7%. For the model, the accuracy on test set is 97.2%. The overall accuracy is well above the required 93.0%. But lets see per class precision and recall for the same model. Precision and recall that are below 93% are highlighed in red.
