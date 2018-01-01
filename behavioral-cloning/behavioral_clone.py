@@ -10,7 +10,6 @@ from keras.layers.convolutional import Convolution2D, MaxPooling2D, Cropping2D
 from keras import backend as K
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
-from preprocess import preprocess_image
 
 samples = []
 # Read driving log given the directory and create samples.
@@ -45,7 +44,7 @@ def generator(samples, batch_size=32):
             angles = []
             for batch_sample_tuple in batch_samples:
                 batch_sample, dir_path, correction = batch_sample_tuple
-                center_image = preprocess_image(cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[0].split('/')[-1])))
+                center_image = cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[0].split('/')[-1]))
                 center_angle = correction if correction else float(batch_sample[3])
                 images.append(center_image)
                 angles.append(center_angle)
@@ -53,14 +52,14 @@ def generator(samples, batch_size=32):
                 angles.append(-center_angle)
         
                 if not correction:
-                    left_image = preprocess_image(cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[1].split('/')[-1])))
+                    left_image = cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[1].split('/')[-1]))
                     left_angle = center_angle + 0.2
                     images.append(left_image)
                     angles.append(left_angle)
                     images.append(np.flip(left_image, 1))
                     angles.append(-left_angle)
 
-                    right_image = preprocess_image(cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[2].split('/')[-1])))
+                    right_image = cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[2].split('/')[-1]))
                     right_angle = center_angle - 0.2
                     images.append(right_image)
                     angles.append(right_angle)
