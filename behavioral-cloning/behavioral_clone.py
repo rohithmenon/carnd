@@ -28,6 +28,10 @@ add_to_samples('./ls_data', 0.5)
 add_to_samples('./rs_data', -0.5)
 # Add samples from curve track
 #add_to_samples('./curve_c_data', None)
+# Add samples from curve left side drive
+#add_to_samples('./curve_data_ls', 0.5)
+# Add samples from curve right side drive
+#add_to_samples('./curve_data_rs', -0.5)
 
 # Split train/validation samples
 train_samples, validation_samples = train_test_split(samples, test_size=0.1)
@@ -48,29 +52,20 @@ def generator(samples, batch_size=32):
                 images.append(np.flip(center_image, 1))
                 angles.append(-center_angle)
         
-                left_image = preprocess_image(cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[1].split('/')[-1])))
-                left_angle = center_angle + 0.2
-                if correction:
-                    if correction > 0.0:
-                        left_angle = correction + 0.2
-                    else:
-                        left_angle = correction - 0.2
-                images.append(left_image)
-                angles.append(left_angle)
-                images.append(np.flip(left_image, 1))
-                angles.append(-left_angle)
+                if not correction:
+                    left_image = preprocess_image(cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[1].split('/')[-1])))
+                    left_angle = center_angle + 0.2
+                    images.append(left_image)
+                    angles.append(left_angle)
+                    images.append(np.flip(left_image, 1))
+                    angles.append(-left_angle)
 
-                right_image = preprocess_image(cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[2].split('/')[-1])))
-                right_angle = center_angle - 0.2
-                if correction:
-                    if correction > 0.0:
-                        right_angle = correction - 0.2
-                    else:
-                        left_angle = correction + 0.2
-                images.append(right_image)
-                angles.append(right_angle)
-                images.append(np.flip(right_image, 1))
-                angles.append(-right_angle)
+                    right_image = preprocess_image(cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[2].split('/')[-1])))
+                    right_angle = center_angle - 0.2
+                    images.append(right_image)
+                    angles.append(right_angle)
+                    images.append(np.flip(right_image, 1))
+                    angles.append(-right_angle)
 
             X_train = np.array(images)
             y_train = np.array(angles)
