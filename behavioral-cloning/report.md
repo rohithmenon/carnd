@@ -35,22 +35,9 @@ Model architecture is the same as that found in 'End-to-End Deep Learning for Se
 ![](report_data/network.jpg)
 
 ### Model evolution:
-
 * Single fully connected layer
 * LeNet (3 epochs, validation loss: 0.0071)
-
-2605/2604 [==============================] - 132s 51ms/step - loss: 0.0103 - val_loss: 0.0084
-Epoch 2/3
-2605/2604 [==============================] - 131s 50ms/step - loss: 0.0068 - val_loss: 0.0075
-Epoch 3/3
-2605/2604 [==============================] - 131s 50ms/step - loss: 0.0054 - val_loss: 0.0071
-
-* Nvidia end-to-end network for self-driving (3 epochs, validation loss: 0.0071)
-2605/2604 [==============================] - 126s 48ms/step - loss: 0.0100 - val_loss: 0.0076
-Epoch 2/3
-2605/2604 [==============================] - 124s 48ms/step - loss: 0.0081 - val_loss: 0.0080
-Epoch 3/3
-2605/2604 [==============================] - 124s 48ms/step - loss: 0.0074 - val_loss: 0.0061
+* Nvidia end-to-end network for self-driving (3 epochs, validation loss: 0.0061)
 
 ## <a name="training">Training and validation</a>
 Images from driving data is augmented using techniques under data collection. They are then split into train and validation groups. 10% of the data is set aside for validation.
@@ -64,11 +51,14 @@ Images from driving data is augmented using techniques under data collection. Th
 
 ### Training and validation loss
 
+While LeNet had good training and validation loss, the network failed to turn at the left turn after the bridge. It would have been possible to oversample this turn and make it to work, but the drive was not smooth. With Nvidia's network, the drive was smooth and the car was always on the track. Training was done for 3 epochs. With epochs > 3, the loss reduction was not significant or increasing.
+
+![](report_data/network_loss.jpg)
 
 ## <a name="simulation">Simulation</a>
+The car stays within the track with the trained model. The video is available [here](https://github.com/rohithmenon/carnd/blob/master/behavioral-cloning/run1.mp4?raw=true).
 
 ## <a name="improvements">Improvements</a>
-
-
+The model is only trained on one track. The network would generalize better if trained on the second track also. End to end learning using the network is pretty cool, but with some preprocessing to identify lanes, the network may perform better. Collecting more data for cases where the network does not do a great job (especially some turns) would help to make the drive smooth. More data would result in increased training/validation time (inspite of using gpu), so performing training on a gpu cluster would be a good idea.
 
 
