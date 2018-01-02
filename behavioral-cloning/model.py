@@ -51,7 +51,7 @@ def augment(samples, batch_size=32):
             for batch_sample_tuple in batch_samples:
                 batch_sample, dir_path, correction = batch_sample_tuple
                 center_image = cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[0].split('/')[-1]))
-                center_angle = float(batch_sample[3]) + correction.center if correction.center else 0.0
+                center_angle = float(batch_sample[3]) + (correction.center if correction.center else 0.0)
                 images.append(center_image)
                 angles.append(center_angle)
                 images.append(np.flip(center_image, 1))
