@@ -29,11 +29,11 @@ def add_to_samples(dir_path, center_correction=None, left_correction=None, right
             n_augmented_samples += 2 if right_correction else 0
 
 # Add samples from center drive
-add_to_samples('./track1_center', left_correction=0.1, right_correction=-0.1)
+add_to_samples('./track1_center', left_correction=0.2, right_correction=-0.2)
 # Add samples from left side drive
-add_to_samples('./track1_left', center_correction=0.2)
+add_to_samples('./track1_left', center_correction=0.3)
 # Add samples from right side drive
-add_to_samples('./track1_right', center_correction=-0.2)
+add_to_samples('./track1_right', center_correction=-0.3)
 
 # Split train/validation samples
 train_samples, validation_samples = train_test_split(samples, test_size=train_test_split_ratio)
@@ -118,6 +118,6 @@ model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, samples_per_epoch= \
-            n_augmented_samples * train_test_split_ratio, validation_data=validation_generator, \
+            n_augmented_samples * 0.3, validation_data=validation_generator, \
             nb_val_samples=len(validation_samples), nb_epoch=3)
 model.save('model.h5')
