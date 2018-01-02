@@ -95,7 +95,7 @@ def generator(samples, batch_size=32):
 train_generator = generator(shuffle(train_samples), batch_size=32)
 validation_generator = generator(shuffle(validation_samples), batch_size=32)
 
-ch, row, col = 3, 160, 320 # Trimmed image format
+ch, row, col = 3, 160, 320 # Image dimensions
 
 # Nvidia end-to-end self-driving network
 model = Sequential()
