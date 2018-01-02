@@ -118,6 +118,7 @@ model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, samples_per_epoch= \
-            n_augmented_samples * 0.3, validation_data=validation_generator, \
+            n_augmented_samples * (1.0 - train_test_split_ratio), \
+            validation_data=validation_generator, \
             nb_val_samples=len(validation_samples), nb_epoch=3)
 model.save('model.h5')
