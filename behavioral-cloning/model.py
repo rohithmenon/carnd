@@ -6,9 +6,8 @@ import os
 import sklearn
 import tensorflow
 from keras.models import Sequential
-from keras.layers import ELU, Flatten, Dense, Lambda, BatchNormalization, Dropout
-from keras.layers.convolutional import Convolution2D, MaxPooling2D, Cropping2D
-from keras import backend as K
+from keras.layers import Flatten, Dense, Lambda, Dropout
+from keras.layers.convolutional import Convolution2D, Cropping2D
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
@@ -24,7 +23,7 @@ def add_to_samples(dir_path, center_correction=None, left_correction=None, right
         reader = csv.reader(csvfile)
         for line in reader:
             samples.append((line, dir_path, Correction(center_correction, left_correction, right_correction)))
-            # Two samples will be added for center, right and left images 
+            # Two samples will be added for center, right and left images
             n_augmented_samples += 2
             n_augmented_samples += 2 if left_correction else 0
             n_augmented_samples += 2 if right_correction else 0
@@ -35,10 +34,6 @@ add_to_samples('./track1_center', left_correction=0.1, right_correction=-0.1)
 add_to_samples('./track1_left', center_correction=0.2)
 # Add samples from right side drive
 add_to_samples('./track1_right', center_correction=-0.2)
-# Add samples from curve track
-#add_to_samples('./track2_center', left_correction=0.2, right_correction=-0.2)
-# Add samples from track2 curves 
-#add_to_samples('./track2_curves')
 
 # Split train/validation samples
 train_samples, validation_samples = train_test_split(samples, test_size=train_test_split_ratio)
@@ -61,7 +56,7 @@ def augment(samples, batch_size=32):
                 angles.append(center_angle)
                 images.append(np.flip(center_image, 1))
                 angles.append(-center_angle)
-        
+
                 if correction.left:
                     left_image = cv2.imread('{}/IMG/{}'.format(dir_path, batch_sample[1].split('/')[-1]))
                     left_angle = center_angle + correction.left
@@ -95,8 +90,8 @@ def generator(samples, batch_size=32):
                 batch_images = []
                 batch_angles = []
                 yield (X_train, y_train)
-                 
-# compile and train the model using the generator function
+
+# Compile and train the model using the generator function
 train_generator = generator(shuffle(train_samples), batch_size=32)
 validation_generator = generator(shuffle(validation_samples), batch_size=32)
 
@@ -106,6 +101,7 @@ ch, row, col = 3, 160, 320 # Trimmed image format
 model = Sequential()
 # Preprocess incoming data, centered around zero with small standard deviation
 model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape=(row, col, ch)))
+# Crop top 60 pixels and bottom 20 pixels to remove non track parts of the image
 model.add(Cropping2D(cropping=((60, 20), (0, 0))))
 model.add(Convolution2D(24, 5, 5, subsample=2, activation='relu'))
 model.add(Convolution2D(36, 5, 5, subsample=2, activation='relu'))
@@ -124,4 +120,4 @@ model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, samples_per_epoch= \
             n_augmented_samples * train_test_split_ratio, validation_data=validation_generator, \
             nb_val_samples=len(validation_samples), nb_epoch=3)
-model.save('model.t1.h5')
+model.save('model.h5')
