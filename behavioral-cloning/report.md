@@ -28,6 +28,9 @@ Like mentioned in the above section, data collection is performed using the simu
  | Left | Right
  | :---: | :---:
  | ![](report_data/t1_left_correction.jpg) | ![](report_data/t1_right_correction.jpg)
+5. Drive multiple tracks.
+6. Sample only 10% of 0 angle frames. 0 angle frames are over represented.
+ ![](report_data/angle_histogram.jpg)
 
 ## <a name="model_architecture">Model architecture</a>
 Model architecture is the same as that found in 'End-to-End Deep Learning for Self-Driving Cars' from Nvidia. This model provides the lowest validation loss, and the smoothest steering angle prediction. The network is setup to perform regression to predict steering angles.
@@ -56,9 +59,7 @@ While LeNet had good training and validation loss, the network failed to turn at
 ![](report_data/network_loss.jpg)
 
 ## <a name="simulation">Simulation</a>
-The car stays within the track with the trained model. The video is available [here](https://github.com/rohithmenon/carnd/blob/master/behavioral-cloning/run1.mp4?raw=true).
+The car stays within both the tracks with the trained model. The video is available [track1](https://github.com/rohithmenon/carnd/blob/master/behavioral-cloning/run1.mp4?raw=true) and [track2](https://github.com/rohithmenon/carnd/blob/master/behavioral-cloning/run2.mp4?raw=true).
 
 ## <a name="improvements">Improvements</a>
-The model is only trained on one track. The network would generalize better if trained on the second track also. End to end learning using the network is pretty cool, but with some preprocessing to identify lanes, the network may perform better. Collecting more data for cases where the network does not do a great job (especially some turns) would help to make the drive smooth. More data would result in increased training/validation time (inspite of using gpu), so performing training on a gpu cluster would be a good idea.
-
-
+End to end learning using the network is pretty cool, but with some preprocessing to identify lanes, the network may perform better. Collecting more data for cases where the network does not do a great job (especially some turns) would help to make the drive smooth. More data would result in increased training/validation time (inspite of using gpu), so performing training on a gpu cluster would be a good idea.
