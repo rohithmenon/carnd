@@ -97,6 +97,8 @@ Lane line detection uses the techniques taught in the class.
 | :---: | :---:
 | ![](output_images/original.jpg) | ![](output_images/lane_lines.jpg)
 
+Lane pixels identified with a overlapping moving window is marked in red. The fit is marked in green. The intersection of the two can be seen in yellow.
+
 ### Radius of curvature
 Radius of curvature is calculated by first scaling image pixels to real world points. The scaled points are then fit with a polynomial (2 degree) and its radius of curvature is computed using the formula:
 

@@ -46,9 +46,9 @@ class LaneLineDetector(ImageFilter):
             r_center = np.argmax(conv_signal[r_min_index:r_max_index]) + r_min_index - offset
             # Add what we found for that layer
             if l_max_val > 0.0:
-                left_lane_points.append((l_center, layer_row_start))
+                left_lane_points.append((l_center, layer_row_end))
             if r_max_val > 0.0:
-                right_lane_points.append((r_center, layer_row_start))
+                right_lane_points.append((r_center, layer_row_end))
 
         return (
             self.fit_points(left_lane_points) if len(left_lane_points) > 3 else None,

@@ -33,10 +33,10 @@ class CurvatureDetailsFilter(ImageFilter):
             # Now our radius of curvature is in meters and how far its off of center
             left_lane_x = evaluate(left_fit_cr, y_eval)
             right_lane_x = evaluate(right_fit_cr, y_eval)
-            image_center = image.shape[2] * METERS_PER_PIXEL_X / 2
+            image_center = image.shape[1] * METERS_PER_PIXEL_X / 2
             lane_center = (left_lane_x + right_lane_x) / 2
-            cv2.putText(image, "Left Curvature: {}".format(round(left_curverad, 2)), (700, 150), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (240, 240, 240), thickness=3)
-            cv2.putText(image, "Right Curvature: {}".format(round(right_curverad, 2)), (700, 200), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (240, 240, 240), thickness=3)
-            cv2.putText(image, "Center Deviation: {}".format(round(image_center - lane_center, 2)), (700, 250), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (240, 240, 240), thickness=5)
+            cv2.putText(image, "Left Curvature: {}".format(round(left_curverad, 2)), (700, 150), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (240, 240, 240), thickness=3)
+            cv2.putText(image, "Right Curvature: {}".format(round(right_curverad, 2)), (700, 200), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (240, 240, 240), thickness=3)
+            cv2.putText(image, "Center Deviation: {}".format(round(image_center - lane_center, 2)), (700, 250), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (240, 240, 240), thickness=5)
 
         return image
