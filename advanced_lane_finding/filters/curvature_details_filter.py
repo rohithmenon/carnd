@@ -35,8 +35,8 @@ class CurvatureDetailsFilter(ImageFilter):
             right_lane_x = evaluate(right_fit_cr, y_eval)
             image_center = image.shape[1] * METERS_PER_PIXEL_X / 2
             lane_center = (left_lane_x + right_lane_x) / 2
-            cv2.putText(image, "Left Curvature: {}".format(round(left_curverad, 2)), (700, 150), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (240, 240, 240), thickness=3)
-            cv2.putText(image, "Right Curvature: {}".format(round(right_curverad, 2)), (700, 200), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (240, 240, 240), thickness=3)
-            cv2.putText(image, "Center Deviation: {}".format(round(image_center - lane_center, 2)), (700, 250), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (240, 240, 240), thickness=5)
+            cv2.putText(image, "Left Curvature: {}".format(round(left_curverad, 2)), (800, 150), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 0), thickness=3)
+            cv2.putText(image, "Right Curvature: {}".format(round(right_curverad, 2)), (800, 200), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 0), thickness=3)
+            cv2.putText(image, "Center Deviation: {}".format(round(image_center - lane_center, 2)), (800, 250), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 0), thickness=5)
 
         return image

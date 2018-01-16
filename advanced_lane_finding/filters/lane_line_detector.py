@@ -26,7 +26,7 @@ class LaneLineDetector(ImageFilter):
         right_lane_points.append((r_center, rows - 1))
 
         # Go through each layer looking for max pixel locations
-        for layer in range(0, int(rows - window_height), 25):
+        for layer in range(0, int(rows - window_height), 50):
             # convolve the window inxsto the vertical slice of the image
             layer_row_start = int(rows - (layer + window_height))
             layer_row_end = int(rows - layer)
