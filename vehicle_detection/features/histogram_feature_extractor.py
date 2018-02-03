@@ -11,13 +11,13 @@ class HistogramFeatureExtractor(FeatureExtractor):
     def extract(self, image):
         transformed = image
         if self.color_space == "hsv":
-            transformed = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+            transformed = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
         elif self.color_space == "hls":
-            transformed = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
+            transformed = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
         elif self.color_space == "luv":
-            transformed = cv2.cvtColor(image, cv2.COLOR_BGR2LUV)
+            transformed = cv2.cvtColor(image, cv2.COLOR_RGB2LUV)
         elif self.color_space == "yuv":
-            transformed = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+            transformed = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
 
         hist_ch1 = np.histogram(transformed[:, :, 0], bins=self.num_bins, range=(0, 256))
         hist_ch2 = np.histogram(transformed[:, :, 1], bins=self.num_bins, range=(0, 256))

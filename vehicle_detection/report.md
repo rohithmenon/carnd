@@ -1,6 +1,6 @@
 # Vehicle detection and tracking
 
-Objective of the project is to use machine learning (support vector machines in specific) and computer vision techniques to detect other cars on road and track them in a video stream. The rest of the document is organized as:
+Objective of the project is to use machine learning (support vector machines in specific) and computer vision techniques to detect cars on road and track them in a video stream. The rest of the document is organized as:
 
 1. [Problem setup](#problem_setup)
 2. [Detection Pipeline](#detection_pipeline)
@@ -18,12 +18,15 @@ Image processing and computer vision algorithms are applied to the images to det
 Three type of features are used:
 1. 32x32 average pooled image.
    This is a concise representation of the image. Although lossy, it still keeps around enough information to distinguish between car and non-car.
+
    ![](output_images/pooled_feature.jpg)
 2. HOG of grayscale image [pixels_per_cell=8, cells_per_block=2x2]
    This feature captures information about gradients which can identify parts of shape that make up a car. The above parameters for HOG provided good accuracy 99.26%
-   ![](output_images/hog_feature.jpg)
+
+    ![](output_images/hog_feature.jpg)
 3. Histogram of all channels of HSV color space.
-   Feature helps with color distribution of cars. This is something that is different for cars and non-cars.
+   Feature helps with color distribution of cars. This feature provides color based distinctness for cars and non-cars.
+    ![](output_images/histogram.jpg)
 
 Features are then scaled to zero mean and unit variance using StandardScaler. This will prevent any single feature to dominate learning.
 
