@@ -8,6 +8,10 @@ from features.pooled_pixel_feature_extractor import PooledPixelFeatureExtractor
 
 
 class ImageWindowHogFeatureExtractor(FeatureExtractor):
+    """
+    Calculate hog features once per image and extract hog features for window
+    by reusing the image hog features.
+    """
     def __init__(self, image):
         self.image = image
         hog_extractor = HogFeatureExtractor(feature_vector=False)
@@ -26,6 +30,9 @@ class ImageWindowHogFeatureExtractor(FeatureExtractor):
 
 
 class ImageWindowVehicleDetector(object):
+    """
+    Detect car within a window over an image using the passed in classifier.
+    """
     def __init__(self, image, model, scaler):
         self.image = image
         self.model = model
