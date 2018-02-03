@@ -36,10 +36,11 @@ Features are then scaled to zero mean and unit variance using StandardScaler. Th
 ![](output_images/dataset.jpg)
 
 ### Gridsearched final parameters of the classifier
-Type: SVC
-Kernel: rbf
-c: 10
-Accuracy: 99.26%
+* Type: SVC
+* Kernel: rbf
+* C: 10
+
+Accuracy on test data with the above parameters: 99.26%
 
 ## <a name="tracking_pipeline">Tracking Pipeline</a>
 Tracking pipeline implements tracking of cars in the video. A sliding window over video frame is passed to the classifier to detect if the window contains a car. A bounding box is then drawn on the the detected window. Detailed pipeline:
@@ -48,10 +49,10 @@ Tracking pipeline implements tracking of cars in the video. A sliding window ove
    ![](output_images/sliding.jpg)
 2. Extract above features for each of the window. [For HOG features, we compute HOG features once and subsample the values]
 3. Predict the presence of car using the trained SVM classifier.
-4. For each window that detects car, add a vote on a heat map sized same as the video frame image.
+4. For each window that detects car, add a vote on a heat map sized same as the video frame image. Windows are restricted to the bottom half of the image.
 5. Smooth the heat_map by averaging across historical frames. The exact logic smooths by choosing the moving window (size 7) average of heat_maps that maximizes total value of votes over the last 15 frames.
 6. Threshold heat map for atleast 2 votes per pixel and extract contiguous non-zero pixels as different detected cars.
-7. Draw bounding boxes on the detected images.
+7. Draw bounding boxes on the detected images. Bounding boxes with voted pixels less than a threshold of 4096 is rejected.
 
 ## <a name="results">Result</a>
 #### Pipeline on Test images
