@@ -165,7 +165,7 @@ void FusionEKF::ReportMeasurement(const MeasurementPackage &measurement_pack) {
   auto prev_timestamp = previous_timestamp_.load();
   auto elapsed_micros = current_timestamp - prev_timestamp;
   previous_timestamp_.store(current_timestamp);
-  // First frame, just update the timestamp.
+  // First frame, initialize state and update the timestamp.
   if (prev_timestamp.count() == 0) {
     Eigen::VectorXd state = GetStateFromMeasurement(measurement_pack);
     lidar_ekf_ = lidar_ekf_->FromState(state);
