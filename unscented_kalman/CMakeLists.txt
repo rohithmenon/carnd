@@ -7,7 +7,7 @@ add_definitions(-std=c++11)
 set(CXX_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
-set(sources src/ukf.cpp src/main.cpp src/tools.cpp src/SigmaPoints.cpp src/SigmaPoints.h src/UKF.cpp src/UKF.h src/CTRV.cpp src/CTRV.h src/Laser.cpp src/Laser.h src/Radar.cpp src/Radar.h)
+set(sources src/main.cpp src/tools.cpp src/SigmaPoints.cpp src/SigmaPoints.h src/UKF.cpp src/UKF.h src/CTRV.cpp src/CTRV.h src/Laser.cpp src/Laser.h src/Radar.cpp src/Radar.h)
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
