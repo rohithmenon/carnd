@@ -1,5 +1,5 @@
 //
-// Created by Rohith Menon on 4/2/18.
+// Radar measurement model implementation.
 //
 
 #include <iostream>

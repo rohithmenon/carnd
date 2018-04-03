@@ -1,5 +1,5 @@
 //
-// Created by Rohith Menon on 3/31/18.
+// CTRV model implementation.
 //
 
 #include <iostream>

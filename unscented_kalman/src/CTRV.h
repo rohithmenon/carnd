@@ -1,5 +1,5 @@
 //
-// Created by Rohith Menon on 3/31/18.
+// Constant turn rate and velocity model (CTRV).
 //
 
 #ifndef UNSCENTEDKF_CTRV_H

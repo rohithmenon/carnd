@@ -1,5 +1,5 @@
 //
-// Created by Rohith Menon on 3/31/18.
+// Sigma points approximation implementation.
 //
 
 #include <iostream>

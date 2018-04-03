@@ -1,5 +1,5 @@
 //
-// Created by Rohith Menon on 4/1/18.
+// Laser measurement model implementation.
 //
 
 #include <iostream>
