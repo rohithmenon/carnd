@@ -5,6 +5,8 @@
 #include "particle_filter.h"
 
 #include "particle.h"
+#include <iostream>
+#include <iterator>
 #include <numeric>
 #include <set>
 #include <sstream>
@@ -123,7 +125,7 @@ std::string ParticleFilter::getAssociations(Particle best)
 {
   std::vector<int> v = best.associations;
   std::stringstream ss;
-  copy( v.begin(), v.end(), std::ostream_iterator<int>(ss, " "));
+  std::copy(v.begin(), v.end(), std::ostream_iterator<int>(ss, " "));
   std::string s = ss.str();
   s = s.substr(0, s.length()-1);  // get rid of the trailing space
   return s;
@@ -132,7 +134,7 @@ std::string ParticleFilter::getSenseX(Particle best)
 {
   std::vector<double> v = best.sense_x;
   std::stringstream ss;
-  copy( v.begin(), v.end(), std::ostream_iterator<float>(ss, " "));
+  std::copy(v.begin(), v.end(), std::ostream_iterator<float>(ss, " "));
   std::string s = ss.str();
   s = s.substr(0, s.length()-1);  // get rid of the trailing space
   return s;
@@ -141,7 +143,7 @@ std::string ParticleFilter::getSenseY(Particle best)
 {
   std::vector<double> v = best.sense_y;
   std::stringstream ss;
-  std::copy( v.begin(), v.end(), std::ostream_iterator<float>(ss, " "));
+  std::copy(v.begin(), v.end(), std::ostream_iterator<float>(ss, " "));
   std::string s = ss.str();
   s = s.substr(0, s.length()-1);  // get rid of the trailing space
   return s;

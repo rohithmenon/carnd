@@ -97,7 +97,7 @@ int main() {
                         std::istream_iterator<float>(),
                         std::back_inserter(y_sense));
 
-              for (int i = 0; i < x_sense.size(); i++) {
+              for (size_t i = 0; i < x_sense.size(); i++) {
                 noisy_observations.emplace_back(LandmarkObs{-1, x_sense[i], y_sense[i]});
               }
 
